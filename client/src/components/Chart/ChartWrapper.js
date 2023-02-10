@@ -13,7 +13,7 @@ const ChartWrapper =({currentPrice,tokenName,setTokenName,ST_Name,setTotalChartD
     const [chartTermArr, setChartTermArr] = useState([])
     const [isLoading, setIsLoading] = useState(false);
     const [termValue, setTermValue] = useState(1);
-    const [offset,setOffset]=useState(0);
+    const [offset,setOffset]=useState(1500);
     const [limit, setLimit]=useState(10000);
     const [total,setTotal] = useState(0);
     const [termArrLength,setTermArrLength] = useState(2000);
@@ -48,7 +48,7 @@ useEffect(()=>{
         }
     })
     setChartTotal(offset,limit,tokenName)
-    console.log(tokenName)
+    // console.log(tokenName)
 
 },[tokenName])
 
@@ -118,7 +118,7 @@ useEffect(()=>{
             }
             termNum=termValue
             setTermArrLength(setByTimeNewArr.length)
-            setDataLength(setByTimeNewArr.length/5)
+            setDataLength(setByTimeNewArr.length/2)
         }    
     },[termValue,chartOriginArr])
 

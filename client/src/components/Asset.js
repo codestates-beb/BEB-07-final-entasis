@@ -1,8 +1,8 @@
 const Asset =({
     price,
     amount,
+    total_dividend_income,
     dividend_income_ratio,
-    date,
     })=>{
     return(
         <div className="asset_wrapper">
@@ -13,10 +13,10 @@ const Asset =({
                 {amount}
             </div>
             <div className="asset_dividend_income_ratio">
-                {(dividend_income_ratio*amount).toFixed(3)}
+                {Number(total_dividend_income).toFixed(3)}
             </div>
             <div className="asset_date">
-                {date}
+                {Number(dividend_income_ratio).toFixed(7)}
             </div>
         </div>
     )

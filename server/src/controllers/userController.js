@@ -78,9 +78,10 @@ module.exports = {
       const userPosition = await position_his.findAll({
         where: { user_wallet: wallet },
         offset: Number(offset),
-        limit: Number(limit)
+        limit: Number(limit),
+        order: [['id', 'DESC']],
       })
-      const total = await price_his.findAll();
+      const total = await position_his.findAll({ where: { user_wallet: wallet } });
       if(!total) return res.status(400).json({message:"No such data"});
       return res.status(200).json({userPosition:userPosition,totalLength: total.length});
       
@@ -132,6 +133,25 @@ module.exports = {
     try {
       const balance = await getEtherBalance(wallet);
       return res.status(200).send({balance})
+    } catch (err) {
+      console.error(err);
+      return next(err);
+    }
+  },
+
+  personalDividend: async (req, res, next) => {
+    const { wallet } = req.query;
+    try {
+      const entaDividend = await position_his.sum('price', { where: { user_wallet: wallet, order: 'dividend', token_name: 'ENTAToken' } });
+      const bebDividend = await position_his.sum('price', { where: { user_wallet: wallet, order: 'dividend', token_name: 'BEBToken' } });
+      const leoDividend = await position_his.sum('price', { where: { user_wallet: wallet, order: 'dividend', token_name: 'LEOToken' } });
+      if(!entaDividend || !bebDividend || !leoDividend) return res.status(400).send({message: "wrong with sum query"})
+      const result = {
+        ENTAToken: entaDividend,
+        BEBToken: bebDividend,
+        LEOToken: leoDividend
+      }
+      return res.status(200).json(result);
     } catch (err) {
       console.error(err);
       return next(err);

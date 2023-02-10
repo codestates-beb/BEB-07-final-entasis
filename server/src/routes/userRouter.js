@@ -9,6 +9,7 @@ router.put('/tutorial', userController.tutorial);
 router.get('/position', userController.position);
 router.get('/mypage', userController.mypage);
 router.put('/faucet', userController.faucet);
-router.get('/ethbalance', userController.ethbalance); // 이더 잔액 조회 테스트 API
+router.get('/ethbalance', userController.ethbalance);
+router.get('/personaldividend', userController.personalDividend);
 
 module.exports = router;

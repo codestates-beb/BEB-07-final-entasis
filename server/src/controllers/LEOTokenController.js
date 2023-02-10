@@ -1,11 +1,12 @@
 const { position_his } = require('../models');
 const { sendWeiToUser, sendEtherToUser, getEtherBalance } = require('../chainUtils/etherUtils');
 const { sendLEOTokenToUser, restrictLEOToken, allowLEOToken, isRestrictedLEO } = require('../chainUtils/LEOUtils');
-const { LEO_Contract } = require('../chainUtils/index')
+const { LEO_Contract } = require('../chainUtils/index');
+const { Transaction } = require('sequelize');
 
 module.exports = {
     buy: async(req,res,next)=> {
-        const {price,amount,wallet} = req.body;
+        const {price,amount,wallet,txin} = req.body;
         try {
             if(!price || !amount || !wallet) return res.status(400).json({status : "fail", message: "there's a problem with body"});
             // 클라이언트 : 메타마스크를 통해 거래소로 이더 전송(수수료도 전송해야 함)
@@ -19,7 +20,9 @@ module.exports = {
                     price: price,
                     amount: amount,
                     fee: price * amount * 0.0004,
-                    token_name: "LEOToken"
+                    token_name: "LEOToken",
+                    txin,
+                    txout: buyToken.transactionHash
                 });
                 return res.status(200).json({status : "success"});
             }
@@ -31,7 +34,7 @@ module.exports = {
     },
 
     sell: async(req,res,next)=> {
-        const {price,amount,wallet} = req.body;
+        const {price,amount,wallet,txin} = req.body;
         try {
             if(!price || !amount || !wallet) return res.status(400).json({status : "fail", message: "there's a problem with body"});
             
@@ -53,7 +56,9 @@ module.exports = {
                     price: price,
                     amount : amount,
                     fee: price * amount * 0.0004,
-                    token_name: "LEOToken"
+                    token_name: "LEOToken",
+                    txin,
+                    txout: sellToken.transactionHash
                 });
                 return res.status(200).json({status : "success"});
             }
@@ -63,43 +68,4 @@ module.exports = {
             return next(err);
         }
     },
-
-    // 거래제한을 어떻게 실행할지에 대한 방안 논의 필요
-    // 1. 클라이언트에서 요청을 보낸다.
-    // 2. 가격 변동에 따라서 자동으로 거래 제한/해제가 되도록 한다.(우선)
-    restricttoken: async (req, res, next) => {
-        const status = await isRestrictedLEO();
-        console.log(status);
-        try {
-            if(status) {
-                return res.status(400).send({message: "this token had already been restricted"})
-            }
-            const result = await restrictLEOToken();
-            if(result) {
-                return res.status(200).send({status: "successfully restricted the token"});
-            }
-            return res.status(400).send({status: "failed with the contract"});
-        } catch (err) {
-            console.err(err);
-            return next(err);
-        }
-    },
-
-    allowtoken: async (req, res, next) => {
-        const status = await isRestrictedLEO();
-        console.log(status);
-        try {
-            if(!status) {
-                return res.status(400).send({message: "available token"})
-            }
-            const result = await allowLEOToken();
-            if(result) {
-                return res.status(200).send({status: "successfully re-allowed the token"});
-            }
-            return res.status(400).send({status: "failed with the contract"});
-        } catch (err) {
-            console.err(err);
-            return next(err);
-        }
-    }
 }

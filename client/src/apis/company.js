@@ -8,11 +8,17 @@ const vote = getCompanyURL + "vote/"
 const pdisclosure = getCompanyURL + "pdisclosure/?cdp="
 
 // Test API Request
-export const Vote = async(st_name,st_amount,ratio,wallet) => {
+export const Vote = async(st_name,ratio,wallet) => {
     if(wallet===null || wallet ===undefined)return new Error('Invalid Request!')
-    const resultVote=  axios.post(vote + `{${st_name},${st_amount},${ratio},${wallet}}`)
-    .then(res=>res)
+    const voteJSON = {
+        name:st_name,
+        ratio:ratio,
+        user_wallet:wallet
+    }
+    const resultVote=  axios.post(vote,voteJSON)
+    .then(res=>res.data)
     .then(err=>err)
+    console.log(resultVote)
     return  resultVote
 }
 export const CPD = async(name) => {

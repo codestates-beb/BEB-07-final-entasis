@@ -7,6 +7,8 @@ const morgan = require('morgan');
 const ejs = require('ejs');
 const session = require('express-session');
 const cookieParser = require('cookie-parser');
+
+// 트래픽 제어
 const limit = require('express-rate-limit');
 
 const userRouter = require('./routes/userRouter');
@@ -74,8 +76,8 @@ app.use(
 // 리미트분리
 app.use(limit({
   windowMs: 60 * 1000,
-  max: 100,
-  delayMs: 1000,
+  max: 2000,
+  delayMs: 100,
   handler(req,res) {
       res.status(this.statusCode).json({
           code: this.statusCode,
@@ -276,8 +278,10 @@ setInterval(async() => {
 
 // 1분
 setInterval(async () => {
+
   console.log(`${new Date()}`.slice(22,-38))
   if(`${new Date()}`.slice(22,-38)==='00'){
+
 
     //ENTA
     enta_his.create(chartDataENTA)
@@ -365,7 +369,7 @@ setInterval(async () => {
       const balance = await getENTATokenBalance(entaTokenholders[i]);
       const stake = balance / entaTotalSupply;
       const personalDividend = String((dividendENTA * stake).toFixed(18))
-      await sendDividendToUser(entaTokenholders[i], personalDividend);
+      const dividendTx = await sendDividendToUser(entaTokenholders[i], personalDividend);
       // const result = await getEtherBalance(entaTokenholders[i]);
 
       const fixedBalance = web3Http.utils.fromWei(balance, 'ether');
@@ -376,7 +380,8 @@ setInterval(async () => {
         order: "dividend",
         price: personalDividend,
         amount: fixedBalance,
-        token_name: "ENTAToken"
+        token_name: "ENTAToken",
+        txout: dividendTx.transactionHash
       })
     }
   }
@@ -393,7 +398,7 @@ setInterval(async () => {
       const balance = await getBEBTokenBalance(bebTokenholders[i]);
       const stake = balance / bebTotalSupply;
       const personalDividend = String((dividendBEB * stake).toFixed(18))
-      await sendDividendToUser(bebTokenholders[i], personalDividend);
+      const dividendTx = await sendDividendToUser(bebTokenholders[i], personalDividend);
       // const result = await getEtherBalance(bebTokenholders[i]);
 
       const fixedBalance = web3Http.utils.fromWei(balance, 'ether');
@@ -404,7 +409,8 @@ setInterval(async () => {
         order: "dividend",
         price: personalDividend,
         amount: fixedBalance,
-        token_name: "BEBToken"
+        token_name: "BEBToken",
+        txout: dividendTx.transactionHash
       })
     }
   }
@@ -420,7 +426,7 @@ setInterval(async () => {
       const balance = await getENTATokenBalance(leoTokenholders[i]);
       const stake = balance / leoTotalSupply;
       const personalDividend = String((dividendLEO * stake).toFixed(18))
-      await sendDividendToUser(leoTokenholders[i], personalDividend);
+      const dividendTx = await sendDividendToUser(leoTokenholders[i], personalDividend);
       // const result = await getEtherBalance(leoTokenholders[i]);
 
       const fixedBalance = web3Http.utils.fromWei(balance, 'ether');
@@ -431,13 +437,15 @@ setInterval(async () => {
         order: "dividend",
         price: personalDividend,
         amount: fixedBalance,
-        token_name: "LEOToken"
+        token_name: "LEOToken",
+        txout: dividendTx.transactionHash
       })
     }
   }
   // 차기 배당률
   dividend_ratio_LEO = (dividend_ratio_LEO * (1 + Number(voted_ratio_LEO))).toFixed(4) 
-}, 300000);
+}, 600000);
+
 
 //=========================================================================================================//
 
@@ -510,6 +518,7 @@ app.use((req, res, next) => {
   next(err);
 });
 
+// 에러로깅
 app.use((err, req, res, next) => {
   res.locals.message = err.message;
   res.locals.error = process.env.NODE_ENV !== 'production' ? err : {};

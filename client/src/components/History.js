@@ -3,12 +3,16 @@ import Modal from 'react-modal';
 import { Link } from 'react-router-dom';
 
 const History =({
+    id,
     order,
     price,
     amount,
     fee,
     date,
-    token_name})=>{
+    token_name,
+    tx_in,
+    tx_out,
+    setTxs})=>{
 
         const [modalIsOpen, setModalIsOpen] = useState(false);
     
@@ -47,10 +51,14 @@ const modalOpen =()=>{
 const modalClose =()=>{
     document.body.style.overflow = 'unset';
     setModalIsOpen(!modalIsOpen)
+    setTxs({
+        transaction_in:{tx_in},
+        transaction_out:{tx_out}
+        })
     }
 
     return(
-    <div className="history" onClick={modalOpen}>
+    <div className="history" onClick={modalOpen} id={id}>
         <Modal
             appElement={document.getElementById('root') || undefined}
             onRequestClose={modalClose}
@@ -87,11 +95,21 @@ const modalClose =()=>{
                             <div className='trading_record_data_set'><h3>{fee!==null?fee:'-'}</h3></div>
                             <div className='trading_record_data_set'><h3>{date}</h3></div>
                             <div className='trading_record_data_set'><h3>{token_name}</h3></div>
-                            <Link to='/transaction'><div className='trading_record_data_set'><h3>{}0x7986E4e9F15EaBD03a23fC166EFD42247875dD80</h3></div></Link>
-                            <Link to='/transaction'><div className='trading_record_data_set'><h3>{}0x7986E4e9F15EaBD03a23fC166EFD42247875dD80</h3></div></Link>
+                            <div className='trading_record_data_set'
+                            onClick={modalClose}>
+                            <Link to='/transaction'>
+                            <h3>{tx_in}</h3>
+                            </Link>
+                            </div>
+                            <div className='trading_record_data_set'
+                            onClick={modalClose}
+                            >
+                            <Link to='/transaction'>
+                            <h3>{tx_out}</h3>
+                            </Link>
+                            </div>
 
                         </div>
-
                     </div>
                 <div className='trading_record_data_logo'>
                     <img src={require('../assets/images/ENTASIS.png')}></img>
@@ -117,7 +135,7 @@ const modalClose =()=>{
                 {amount}
             </div>
             <div className="history_fee">
-                {fee}
+                {Number(fee).toFixed(4)}
             </div>
             <div className="history_date">
                 {date}

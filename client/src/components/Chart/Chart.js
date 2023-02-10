@@ -59,17 +59,18 @@ const Chart =({currentPrice, chartTermArr,defaultLimit,dataLength,term,setTermVa
         onMouseLeave = {onMouseLeaveHandler}
         >
 
-        <div className="chart_select_top">
-        <div className="chart_select_box">
-            <SelectBox
-                set={ST_Name}
-                value={setTokenName}
-            ></SelectBox>
-            <SelectBox 
-                set = {term}
-                value={setTermValue}
-            ></SelectBox>
-        </div>
+            <div className="chart_select_box_wrapper">
+                <div className="chart_select_box">
+                    <SelectBox
+                        set={ST_Name}
+                        value={setTokenName}
+                    ></SelectBox>
+                    <SelectBox 
+                        set = {term}
+                        value={setTermValue}
+                    ></SelectBox>
+                </div>
+
         {currentPrice!==0?
         <div className="chart_current">
             <div className="chart_current_date">

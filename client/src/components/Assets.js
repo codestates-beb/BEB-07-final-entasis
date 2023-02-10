@@ -1,76 +1,114 @@
 import Asset from "./Asset"
-const Assets =({ST_CurrentPrice,powerOfMarket,userEth,userToken,totalCurrentPrices})=>{
+import {useState, useEffect} from 'react'
+import axios from 'axios';
+const Assets =({ST_CurrentPrice,powerOfMarket,userEth,userEntaToken,userBebToken,userLeoToken,totalCurrentPrices, userPosition, userAccount})=>{
     // `/user/asset/?address=${address}`
+    /* console.log(userPosition.userPosition) */
+    /* const [userPosi, setUserPosi] = useState('')
+    const [userEntaDivide, setUserEntaDivide] = useState('0')
+    const [userEntaDivideAmount, setUserEntaDivideAmount] = useState([])
+    
+    function setPosition() {
+        if (userPosition === undefined) return setUserPosi('')
+        setUserPosi(userPosition.userPosition)
+    }
 
+    async function setUserDivide() {
+        if (userPosi === '') return setUserEntaDivide('0')
+        const filterList = await userPosi.filter(param => param.order == 'dividend' && param.token_name == 'ENTAToken')
+            .map(param => param.price)
+        setUserEntaDivide(filterList)
+        const filterPrice = await filterList.filter(param => param)
+        const sumList =
+        console.log(filterList)
+    }
+
+    async function setUserDivAmount() {
+        if(userEntaDivide === '0') return setUserEntaDivideAmount([])
+        let toArray = await userEntaDivide.map(function(obj){
+            return obj.price.value;
+        })
+        setUserEntaDivideAmount(toArray)
+        console.log(userEntaDivide)
+    }
+
+    useEffect(() => {
+        setPosition()
+        setUserDivide()
+        setUserDivAmount()
+    },[ST_CurrentPrice])
+    console.log(userPosition)
+    console.log(userPosi)
+    setUserPosi(setPosition())
+    console.log(userPosi)
+
+    const filterList = userPosition.userPosition */
+
+    // 배당수익률 = 토큰 배당수익금 / 토큰 현재가격 * 수량
+    // 총 배당 수익률 = 총 배당 수익금 / 총자산
+    // 유저가 받은 총 배당금
+    // 총 수익률
+
+    useEffect(() => {
+        getDividend(userAccount)
+    }, [ST_CurrentPrice])
+
+    const [userDividend, setUserDividend] = useState({
+        ENTAToken:'0',
+        BEBToken:'0',
+        LEOToken:'0'
+    })
+    const apiAddress = "http://localhost:5050/user/personaldividend/?wallet="
+
+    const getDividend = async(wallet) => {
+        if(wallet===null || wallet ===undefined)return new Error('Invalid Request!')
+        const resultAmount = await axios.get(apiAddress + wallet)
+        .then(res=>res)
+        .then(err=>err)
+        setUserDividend(resultAmount.data)
+    }
+    
+    const totalValue = {
+        enta : totalCurrentPrices.enta * userEntaToken,
+        beb : totalCurrentPrices.beb * userBebToken,
+        leo : totalCurrentPrices.leo * userLeoToken
+    }
+    // 유저 토큰 밸런스 합
+    const sumTokenValue = totalValue.enta + totalValue.beb + totalValue.leo
+    // 유저 보유 토큰 밸런스 합 + 유저 보유 이더
+    const userTotalValue = sumTokenValue + Number(userEth)
+    // 유저 총 배당 수익금
+    const totalUserDividendIncome = userDividend.ENTAToken + userDividend.BEBToken + userDividend.LEOToken
+    const totalUserDividendIncomeRatio = totalUserDividendIncome / sumTokenValue
+    console.log(totalUserDividendIncomeRatio)
     const AssetsArray = [
         {
             id:1,
-            price : 1.250,
-            amount : userToken,
-            dividend_income_ratio : 0.005,
-            date : 0,
+            price : totalCurrentPrices.enta,
+            amount : userEntaToken,
+            total_dividend_income : userDividend.ENTAToken,
+            dividend_income_ratio : userDividend.ENTAToken / totalCurrentPrices.enta * userEntaToken,
         },
         {
             id:2,
-            price : 1.250,
-            amount : 330.123,
-            dividend_income_ratio : 0.005,
-            date : 0,
+            price : totalCurrentPrices.beb,
+            amount : userBebToken,
+            total_dividend_income : userDividend.BEBToken,
+            dividend_income_ratio : userDividend.BEBToken / totalCurrentPrices.beb * userBebToken,
         },
         {
             id:3,
-            price : 1.250,
-            amount : 28.2,
-            dividend_income_ratio : 0.005,
-            date : 0,
-        },
-        {
-            id:4,
-            price : 1.250,
-            amount : 102.33,
-            dividend_income_ratio : 0.005,
-            date : 0,
-        },
-        {
-            id:5,
-            price : 1.250,
-            amount : 3310.123,
-            dividend_income_ratio : 0.005,
-            date : 0,
-        },
-        {
-            id:6,
-            price : 1.250,
-            amount : 238.2,
-            dividend_income_ratio : 0.005,
-            date : 0,
-        },
-        {
-            id:7,
-            price : 1.250,
-            amount : 10.343,
-            dividend_income_ratio : 0.005,
-            date : 0,
-        },
-        {
-            id:8,
-            price : 1.250,
-            amount : 3430.123,
-            dividend_income_ratio : 0.005,
-            date : 0,
-        },
-        {
-            id:9,
-            price : 1.250,
-            amount : 228.2,
-            dividend_income_ratio : 0.005,
-            date : 0,
+            price : totalCurrentPrices.leo,
+            amount : userLeoToken,
+            total_dividend_income : userDividend.LEOToken,
+            dividend_income_ratio : userDividend.LEOToken / totalCurrentPrices.leo * userLeoToken,
         },
     ];
     const marketData = powerOfMarket/ST_CurrentPrice;
     const onMouseEnterHandler = () => {
         document.body.style.overflow = 'hidden';
     }
+    /* console.log(totalCurrentPrices.enta) */
     // const x0 = 0;
     // const y0 = 0;
     // const xWidth = 100;
@@ -80,6 +118,8 @@ const Assets =({ST_CurrentPrice,powerOfMarket,userEth,userToken,totalCurrentPric
     <div className="main_assets" >
         <div className="main_assets_top">
             <h4>Account Detail</h4>
+            <h6>Total Income Ratio : {((userTotalValue - 50) / 50 * 100).toFixed(2)}%</h6>
+            <h6>Total DI Ratio : {totalUserDividendIncomeRatio.toFixed(6)}%</h6>
             <div className="rate_on_investment">
             </div>
 
@@ -104,7 +144,7 @@ const Assets =({ST_CurrentPrice,powerOfMarket,userEth,userToken,totalCurrentPric
             <h5>Total Price</h5>
             <h5>Amount</h5>
             <h5>Dividend Income</h5>
-            <h5>Date</h5>
+            <h5>DI Ratio</h5>
             <div className="market_data">
                 <h5>Market Data</h5>
             </div>
@@ -115,10 +155,10 @@ const Assets =({ST_CurrentPrice,powerOfMarket,userEth,userToken,totalCurrentPric
                     return (
                         <Asset
                         key={e.id}
-                        price = {ST_CurrentPrice}
+                        price = {e.price}
                         amount = {e.amount}
-                        dividend_income_ratio={e.dividend_income_ratio}
-                        date = {e.date}
+                        total_dividend_income={e.total_dividend_income}
+                        dividend_income_ratio = {e.dividend_income_ratio}
                     />)})}
                 </div>
                 <div className="market_data_container">

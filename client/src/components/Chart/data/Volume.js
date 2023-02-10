@@ -1,7 +1,6 @@
 import {scaleLinear} from 'd3-scale'
 import { useEffect, useState, useRef } from "react"
 import dataToArray from '../../../functions/data_to_array'
-import PublicDisclosure from '../../PublicDisclosure';
 
 const Volume =({ 
     currentPrice,

@@ -15,7 +15,7 @@ import TokenABI from "../ABIs/ERC1400.json"
 
 // import {FaucetWallet} from '../apis/user'
 
-const MainPage =()=>{
+const MainPage =({setTxs,isWelcome,setIsWelcome})=>{
     const [currentPrice, setCurrentPrice] = useState({
         close : "0",
         createdAt : "0",
@@ -27,6 +27,7 @@ const MainPage =()=>{
         totalVolTo : "0"
     })
     const [isLoading, setIsLoading] = useState(true);
+    
     const [isEnroll,setIsEnroll] =useState({});
     const [userPosition,setUserPosition] = useState();
     const [copy, setCopy] = useState('');
@@ -37,8 +38,13 @@ const MainPage =()=>{
     const [totalChartData, setTotalChartData] = useState(false)
     const [offset, setOffset]=useState(0)
     const [limit, setLimit]=useState(10)
+    const [refresh, setRefresh] = useState(false)
+    const [stName, setStName] = useState('ENTAToken');
+    const [companyPD, setCompanyPD] =useState([]) 
+
     const {chainId, account, active, activate, deactivate} = useWeb3React();
     const currentPrice_ref = useRef({});
+// console.log(offset,limit)
 
     // ================================================================
     // Props Test
@@ -55,7 +61,12 @@ const MainPage =()=>{
         { value: "beb", name: "BEB" },
         { value: "leo", name: "LEO" },
         ];
-
+    const OPTIONS = [
+        { value: "ENTAToken", name: "ENTA" },
+        { value: "BEBToken", name: "BEB" },
+        { value: "LEOToken", name: "LEO" },
+    ];
+        
 
     const StABI = TokenABI.abi
     const web3 = new Web3(
@@ -110,10 +121,13 @@ const MainPage =()=>{
         }
     }
 
+
     // ================================================================
 
     let powerOfMarket = (currentPrice.open - currentPrice.close)
     useEffect(()=>{
+        // console.log('set')
+
         let name = ' '
         if(name !== tokenName&&totalChartData===true){
             const setChartRTD=(async () => 
@@ -124,33 +138,37 @@ const MainPage =()=>{
                     console.log(e) // caught
                 }
             })
+
+        const loop = setInterval(() => {
             if(!isLoading){
-                const loop = setInterval(() => {
                 setChartRTD()
                 clearInterval(loop);
                 powerOfMarket = 0;
-            }, 1000);
-        }else{
-            setTimeout(()=>{
-                setIsLoading(false)
-            },1000)
-        }
+            }else{
+                setTimeout(()=>{
+                    setIsLoading(false)
+                },1000)
+            }
+            clearInterval(loop);
+
+        }, 1000);
+
         }
         name = tokenName;
-    },[tokenName,totalChartData])
+    })
 
     
-    console.log(tokenName,totalChartData)
+    // console.log(tokenName,totalChartData)
     const copyHandler = (e) => {
         copy = e;
     }
     // URL
     const origin = "http://localhost:5050/";
     const getUserURL = origin + "user/"; 
+    const getCompanyURL = origin + "company/"; 
     const enroll = getUserURL + "enroll/?wallet="
     const position = getUserURL + "position/?wallet="
     const chart = origin + "chart/data"
-
     // API Request
     const getChart = async({ offset, limit, unit, st_name}) => {
         if(st_name===null || st_name ===undefined)return new Error('Invalid Request!')
@@ -164,6 +182,7 @@ const MainPage =()=>{
         const resultPosition = await axios.get(position + wallet + `&offset=${offset}&limit=${limit}`)
         .then(res=>res.data)
         .then(err=>err)
+        // console.log(resultPosition)
         setUserPosition(resultPosition)
     }
     const EnrollWallet = async(wallet) => {
@@ -174,11 +193,23 @@ const MainPage =()=>{
         setIsEnroll(resultEnrollWallet)
     }
 
+    const pdisclosure = getCompanyURL + "pdisclosure/?name="
+    useEffect(()=>{
+        const CPD = async(name) => {
+            if(name===null || name ===undefined)return new Error('Invalid Request!')
+            const resultCPD =  axios.get(pdisclosure + name)
+            .then(res=>
+                setCompanyPD(res.data))
+            .then(err=>err)
+        }
+        CPD(stName)
+    },[stName])
+
     useEffect(()=>{
         if(account!==undefined){
-        Position(account,offset,limit)
+        Position(account,offset,10)
         }
-    },[account,offset])
+    },[currentPrice,account,offset,refresh])
 
     useEffect(()=>{
     if(account!==undefined){
@@ -193,19 +224,32 @@ const MainPage =()=>{
 return(
     <div className="main_page" onMouseEnter={onMouseEnterHandler}>
         <WelcomePage
+            isWelcome={isWelcome}
+            setIsWelcome={setIsWelcome}
             account={account}
             tutorialCnt={isEnroll.cnt}
             isLoading={isLoading}
         />
         <Header 
+            isEnroll={isEnroll}
             walletConnected = {walletConnected}
             setWalletConnected = {setWalletConnected}
             isLoading = {isLoading} onMouseEnter={onMouseEnterHandler}
             totalCurrentPrices={currentPrice.totalCurrentPrices}
+            stName={stName}
+            setStName={setStName}
+            companyPD={companyPD}
+            OPTIONS={OPTIONS}
+
         />
         <Navigator
+            totalCurrentPrices={currentPrice.totalCurrentPrices}
+            stName={stName}
+            setStName={setStName}
+            companyPD={companyPD}
             isCircuitBreaker={isCircuitBreaker}
             setIsCircuitBreaker={setIsCircuitBreaker}
+            OPTIONS={OPTIONS}
         />
         <div className="main_head">
             <ChartWrapper
@@ -221,6 +265,8 @@ return(
                 ST_CurrentPrice={currentPrice.close} 
             />
             <Order
+                refresh={refresh}
+                setRefresh={setRefresh}
                 ST_CurrentPrice={currentPrice.close}
                 userEth={userEth}
                 userEntaToken={userEntaToken}
@@ -232,6 +278,8 @@ return(
         </div>
         <div className="main_bottom">
             <Historys
+                refresh={refresh}
+                setTxs={setTxs}
                 setOffset={setOffset}
                 setLimit={setLimit}
                 walletConnected = {walletConnected}
@@ -245,6 +293,9 @@ return(
                 userEntaToken={userEntaToken}
                 userBebToken={userBebToken}
                 userLeoToken={userLeoToken}
+                userPosition={userPosition}
+                userAccount={userAccount}
+                totalCurrentPrices={currentPrice.totalCurrentPrices}
             />
         </div>
         <Footer

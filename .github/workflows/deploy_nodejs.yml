@@ -60,6 +60,7 @@ jobs:
 
       - name: Docker run
         run: |
+
           docker stop ${{env.NAME}} && docker rm ${{env.NAME}} && docker rmi ${{env.DOCKER_IMAGE}}
           docker run -d -p 80:5050 \
           -e NODE_ENV=${{secrets.NODE_ENV}} \
@@ -75,3 +76,4 @@ jobs:
           -e GAS=${{secrets.GAS}} \
           -e GASPRICE=${{secrets.GASPRICE}} \
           --name ${{env.NAME}} --restart always ${{ env.DOCKER_IMAGE }}:latest
+
