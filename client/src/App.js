@@ -16,7 +16,6 @@ function App() {
                 setTxs={setTxs}
                 isWelcome={isWelcome}
                 setIsWelcome={setIsWelcome}
-
                 // ST_CurrentPrice={currentPrice.close} 
                 // powerOfMarket={powerOfMarket}
                 // userEth={userEth}
