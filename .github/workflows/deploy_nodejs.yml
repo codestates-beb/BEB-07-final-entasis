@@ -5,6 +5,7 @@ on:
     branches: 
       - main
       - dev
+      - TEST
     paths: 
       - server/**
   workflow_dispatch: 
