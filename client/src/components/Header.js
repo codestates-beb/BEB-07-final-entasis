@@ -61,7 +61,7 @@ const Header =({walletConnected,setWalletConnected,totalCurrentPrices,stName,set
             connectWalletOnPageLoad() 
         }, [injected])
 
-    const origin = "http://localhost:5050/";
+    const origin = "http://15.165.204.25:5050/";
     const getUserURL = origin + "user/"; 
     const getCompanyURL = origin + "company/"; 
     const faucet = getUserURL + "faucet/?wallet="
