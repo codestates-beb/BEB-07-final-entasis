@@ -36,7 +36,7 @@ const Candle =({
         ]);
     }
 
-    if(`${new Date().getSeconds()}`===`0`){
+    if(`${new Date().getSeconds()}`===`59`){
         currentPrice.high = currentPrice.close
         currentPrice.low = currentPrice.close
     }

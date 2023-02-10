@@ -76,7 +76,7 @@ app.use(
 // 리미트분리
 app.use(limit({
   windowMs: 60 * 1000,
-  max: 2000,
+  max: 20000,
   delayMs: 100,
   handler(req,res) {
       res.status(this.statusCode).json({
@@ -363,17 +363,16 @@ setInterval(async () => {
   //ENTA
   let entaTokenholders = await showAllENTATokenHolders();
   let entaTotalSupply = await getENTATotalSupply();
-
   for(let i=0; i<entaTokenholders.length; i++) {
-    if(entaTokenholders[i] !== process.env.ADMIN_ADDRESS) { // 거래소 제외
-      const balance = await getENTATokenBalance(entaTokenholders[i]);
+    const balance = await getENTATokenBalance(entaTokenholders[i]);
+    if((entaTokenholders[i] !== process.env.ADMIN_ADDRESS) && balance > 0) { // 거래소 제외
       const stake = balance / entaTotalSupply;
       const personalDividend = String((dividendENTA * stake).toFixed(18))
       const dividendTx = await sendDividendToUser(entaTokenholders[i], personalDividend);
       // const result = await getEtherBalance(entaTokenholders[i]);
 
       const fixedBalance = web3Http.utils.fromWei(balance, 'ether');
-      console.log(fixedBalance);
+      // console.log(fixedBalance);
 
       await position_his.create({
         user_wallet: entaTokenholders[i],
@@ -392,17 +391,18 @@ setInterval(async () => {
   //BEB
   let bebTokenholders = await showAllBEBTokenHolders();
   let bebTotalSupply = await getBEBTotalSupply();
+  console.log(bebTokenholders)
 
   for(let i=0; i<bebTokenholders.length; i++) {
-    if(bebTokenholders[i] !== process.env.ADMIN_ADDRESS) { // 거래소 제외
-      const balance = await getBEBTokenBalance(bebTokenholders[i]);
+    const balance = await getBEBTokenBalance(bebTokenholders[i]);
+    if((bebTokenholders[i] !== process.env.ADMIN_ADDRESS) && balance > 0) { // 거래소 제외
       const stake = balance / bebTotalSupply;
       const personalDividend = String((dividendBEB * stake).toFixed(18))
       const dividendTx = await sendDividendToUser(bebTokenholders[i], personalDividend);
       // const result = await getEtherBalance(bebTokenholders[i]);
 
       const fixedBalance = web3Http.utils.fromWei(balance, 'ether');
-      console.log(fixedBalance);
+      // console.log(fixedBalance);
 
       await position_his.create({
         user_wallet: bebTokenholders[i],
@@ -420,17 +420,16 @@ setInterval(async () => {
   //LEO
   let leoTokenholders = await showAllLEOTokenHolders();
   let leoTotalSupply = await getLEOTotalSupply();
-
   for(let i=0; i<leoTokenholders.length; i++) {
-    if(leoTokenholders[i] !== process.env.ADMIN_ADDRESS) { // 거래소 제외
-      const balance = await getENTATokenBalance(leoTokenholders[i]);
+    const balance = await getENTATokenBalance(leoTokenholders[i]);
+    if((leoTokenholders[i] !== process.env.ADMIN_ADDRESS) && balance > 0) { // 거래소 제외
       const stake = balance / leoTotalSupply;
       const personalDividend = String((dividendLEO * stake).toFixed(18))
       const dividendTx = await sendDividendToUser(leoTokenholders[i], personalDividend);
       // const result = await getEtherBalance(leoTokenholders[i]);
 
       const fixedBalance = web3Http.utils.fromWei(balance, 'ether');
-      console.log(fixedBalance);
+      // console.log(fixedBalance);
 
       await position_his.create({
         user_wallet: leoTokenholders[i],
@@ -504,6 +503,7 @@ app.post('/restrict', async (req, res, next) => {
     return next(err);
   }
 })
+
 
 app.use('/chart', chartRouter);
 app.use('/user', userRouter);

@@ -70,11 +70,11 @@ const MainPage =({setTxs,isWelcome,setIsWelcome})=>{
 
     const StABI = TokenABI.abi
     const web3 = new Web3(
-        window.ethereum || process.env.REACT_APP_GANACHE_NETWORK
+        window.ethereum || "18.183.252.200"
     );
-    const EntaTokenContract = new web3.eth.Contract(StABI, process.env.REACT_APP_ENTA_CA);
-    const BebTokenContract = new web3.eth.Contract(StABI, process.env.REACT_APP_BEB_CA);
-    const LeoTokenContract = new web3.eth.Contract(StABI, process.env.REACT_APP_LEO_CA);
+    const EntaTokenContract = new web3.eth.Contract(StABI, "0x7E8D575B3f4a8f419977CEDc14B2b7A229E09D07");
+    const BebTokenContract = new web3.eth.Contract(StABI, "0xd0A913d056748C1f33687eE90d3d996599bbeb07");
+    const LeoTokenContract = new web3.eth.Contract(StABI, "0xF642aEB3d76fc01149bb10dcD88120528aefDB16");
     
     useEffect(() => {
         getUserEth(userAccount);
@@ -265,6 +265,8 @@ return(
                 ST_CurrentPrice={currentPrice.close} 
             />
             <Order
+                ST_Name={ST_Name}
+                setTokenName={setTokenName}
                 refresh={refresh}
                 setRefresh={setRefresh}
                 ST_CurrentPrice={currentPrice.close}

@@ -38,7 +38,7 @@ useEffect(()=>{
             setTimeout(()=>{
                 (resultTotal.data.priceinfo.map(e=>limitChartArr.push(Object.values(e))))
                 setIsChartTotal(limitChartArr)
-                setTotalChartData(true)
+                setTotalChartData(true)         
                 // setIsLoading(false)
                 // setOffset(limit/100)
                 // total=resultTotal.data.totalLength-1;
@@ -56,10 +56,10 @@ useEffect(()=>{
         setChartOriginArr(isChartTotal)
         
     },[isChartTotal,tokenName])
-
+// console.log(`${new Date().getSeconds()}`)
     useEffect(() => {
         const loop = setInterval(() => {
-            if(`${new Date().getSeconds()}`===`0`){
+            if(`${new Date().getSeconds()}`===`59`){
                 let index = chartArr[chartArr.length-1]!==undefined?chartArr[chartArr.length-1][0]+1:undefined
                 let createdAtB = currentPrice.createdAt;
                 let openB= typeof chartArr[chartArr.length-1]==='object'&&!isNaN(chartArr[chartArr.length-1][3]) ?chartArr[chartArr.length-1][3]:currentPrice.open;
@@ -78,6 +78,9 @@ useEffect(()=>{
                     totalVolToB,
                     totalVolFromB,
                 ]]);
+                highB= currentPrice.close;
+                lowB= currentPrice.close;
+
             }  
 
         clearInterval(loop);
@@ -93,8 +96,20 @@ useEffect(()=>{
 
         let cnt = 0
         let termNum = 0;
+        let maxArr = [];
+        let minArr = [];
         // console.log(`${termNum}`,`${termValue}`)
         const arrSum = arr => arr.reduce((a,b) => a + b, 0)
+
+        const dataToArrayMax = (dataToArray) =>{
+            maxArr.push(dataToArray)
+            return  Number(Math.max(...maxArr))
+        }
+
+        const dataToArrayMin = (dataToArray) =>{
+            minArr.push(dataToArray)
+            return  Number(Math.max(...maxArr))
+        }
         if(`${termNum}`!==`${termValue}`){
             for(let i = 0 ; i<chartOriginArr.length; i++){
                 setByTime.push(chartOriginArr[i])
@@ -111,14 +126,16 @@ useEffect(()=>{
                         Number(arrSum(dataToArray(setByTime,6))),
                         Number(arrSum(dataToArray(setByTime,7))),
                     ]
+                    
                 setByTimeNewArr.push(setByTimeArr)
                 setByTime=[]
+                setByTimeArr=[]
             }
             setChartArr(setByTimeNewArr)
             }
             termNum=termValue
             setTermArrLength(setByTimeNewArr.length)
-            setDataLength(setByTimeNewArr.length/2)
+            setDataLength(setByTimeNewArr.length)
         }    
     },[termValue,chartOriginArr])
 

@@ -8,7 +8,6 @@ const HistoryWrapper =({userPosition,walletConnected,setWalletConnected,setOffse
     const [currentPageNum, setCurrentPageNum]=useState(1)
     const {chainId, account, active, activate, deactivate} = useWeb3React();
 
-
     const handleConnect = () => {
         if(active) {
             deactivate();
@@ -41,8 +40,7 @@ const HistoryWrapper =({userPosition,walletConnected,setWalletConnected,setOffse
                     className="pagination_btn">
                         {<i className="fas fa-caret-left"></i>}
                     </div>
-                    
-                    {pages<=10?
+                    {isNaN(pages)?<></>:pages<=10?
                     <div className="pagination_numbers">
                     
                     {Array(pages).fill().map((_,i)=>{
@@ -108,7 +106,7 @@ const HistoryWrapper =({userPosition,walletConnected,setWalletConnected,setOffse
     
             </div>
             <div className="main_history_wrapperA_container">
-                {positions!==undefined&&pages>0?[...positions.userPosition].map((e)=>{
+                {positions!==undefined&&pages>0?(account!==undefined?[...positions.userPosition].map((e)=>{
                     return (<History
                         setTxs={setTxs}
                         key={e.id}
@@ -121,10 +119,11 @@ const HistoryWrapper =({userPosition,walletConnected,setWalletConnected,setOffse
                         tx_in={e.txin}
                         tx_out={e.txout}
                     />)
-                }):<div className="disconnection_status">
+                }):<></>):<div className="disconnection_status">
                 <h6>Start Trading</h6>
                 <h6 className='disconnection_status_login' onClick={handleConnect}>Log In or Sign Up </h6>
                 </div>}
+                {}
             </div>
         </div>
     )

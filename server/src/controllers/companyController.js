@@ -20,7 +20,7 @@ module.exports = {
             await position_his.create({
                 user_wallet,
                 order: "vote",
-                vote: ratio,
+                price: ratio,
                 token_name: name,
                 amount: simpleBalance
             })

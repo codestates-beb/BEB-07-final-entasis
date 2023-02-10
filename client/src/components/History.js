@@ -30,7 +30,7 @@ const History =({
                 display: "block",
                 justifyContent: "center",
                 background: "#2B2B2B",
-                overflow: "scroll",
+                overflow: "none",
                 top:'25%',
                 bottom:'10%',
                 left:'20%',

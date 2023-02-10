@@ -20,7 +20,6 @@ module.exports = (sequelize, DataTypes) => {
     price: DataTypes.STRING,
     amount: DataTypes.STRING,
     fee: DataTypes.STRING,
-    vote: DataTypes.STRING,
     token_name: DataTypes.STRING,
     txin: DataTypes.STRING,
     txout: DataTypes.STRING

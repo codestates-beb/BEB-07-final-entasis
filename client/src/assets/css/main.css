@@ -263,6 +263,12 @@ div.btn:hover{
     width: 500px;
     display: flex;
     justify-content: right;
+    align-items: baseline;
+    transition: 0.5s;
+
+}
+.chart_current h4{
+    color: #0d6097;
 }
 .chart_current h5{
     margin: 0 5px;
@@ -333,6 +339,7 @@ div.public_disclosure_wrapper h4{
 .until_the_next_dividend_release{
     text-align: center;
 }
+
 .is_circuit_breaker h4{
     color: var(--Secondary-color);
 }
@@ -344,6 +351,17 @@ div.public_disclosure_wrapper h4{
     cursor: pointer;
     align-items: center;
     justify-content: right;
+}
+.footer_body_right h5{
+    text-align: right;
+    width: 700px;
+    transition: 0.2s;
+    filter: blur(100px) brightness(0);
+
+}
+
+.footer_body_right:hover  h5{
+    filter: blur(0px) brightness(1.2);
 }
 .circuit_breaker_top h1{
     margin-left: 5px;
@@ -454,7 +472,7 @@ a.circuit_breaker_link:hover{
     color: var(--gray-dark-color);
     display: flex;
     justify-content: space-between;
-    margin-bottom: 1%;
+    margin-bottom: 2%;
 }
 .footer_assets_top .chains{
     width: 3%;
@@ -973,6 +991,11 @@ input{
     display: flex;
     color: var(--gray-dark-color);
     border-bottom: 1px solid var(--gray-dark-color);
+    justify-content: space-between;
+    align-items: baseline;
+}
+.order_select{
+    width: 40%;
 }
 .order{
     padding: 0.4%;
@@ -1047,7 +1070,7 @@ input{
 }
 .footer{
     padding: 2% 2% 2% 2%;
-    height: 500px;
+    height: auto;
 
     text-align: center;
 }
@@ -1056,8 +1079,9 @@ input{
     justify-content: space-between;
     align-items: end;
     height: 50px;
-    margin-bottom: 1%;
-
+    padding-bottom: 1%;
+    margin-bottom: 2%;
+    border-bottom: 1px solid var(--gray-dark-color);
 }
 .footer .footer_top .footer_top_left{
     text-align: left;
@@ -1092,17 +1116,25 @@ input{
     width: 100%;
     justify-content: space-between;
     display: flex;
+    margin-top: 4%;
+    padding-top: 1%;
+    border-top: 1px solid var(--gray-dark-color);
+
 }
 .footer_body_left{
     text-align: left;
     width: 40%;
     color: var(--gray-light-color);
+}
+.footer_body_left h5{
+    filter: blur(100px) brightness(0.2);
+    transition: 0.5s;
 
 }
-.footer_body_right h5{
-    text-align: right;
-    width: 700px;
+.footer_body_left:hover h5{
+    filter: blur(0px) brightness(1.2);
 }
+
 .circuit_breaker_top{
     transition: 0.5s;
 }
@@ -1170,15 +1202,20 @@ input.input_transaction{
 
 }
 .team_introduce{
-    margin-top: 5px;
+    margin-top: 10%;
+    padding-bottom: 1%;
     display: flex;
     justify-content: space-between;
     text-align: right;
+    transition: 0.5s;
+    filter: brightness(0.5);
+}
+.team_introduce:hover{
+    filter: brightness(1.0);
 }
 .team_introduce_member{
-    text-align: left;
-    width: 30%;
-    margin: 0 0 0 2% ;
+    text-align: center;
+    width: 18%;
     transition: 0.5s;
 }
 .team_introduce_member a{
@@ -1192,11 +1229,58 @@ input.input_transaction{
     margin-left: 2%;
     width: 500px;
     color: var(--gray-light-color);
+    filter: blur(100px) brightness(0);
+    transition: 0.5s;
+}   
+.footer_top_left_introduce {
+    filter: blur(100px) brightness(0);
+    transition: 0.5s;
 
 }
+.footer_top_left:hover .footer_top_left_introduce{
+    filter: blur(0px) brightness(1.2);
+}
+
 .team_introduce_member h3{
     color: var(--gray-light-color);
 }
 .footer_name{
     margin-left: 15px;
+}
+.myaccount_section{
+    margin: 4%;
+}
+.myaccount_section h3{
+    color:  #474747;
+}
+.total_assets{
+    display: flex;
+    align-items: baseline;
+}
+.total_assets h6{
+    margin: 0 2%;
+}
+.footer_img{
+    width: 100%;
+    height: 300px;
+    padding: 2% 0;
+    overflow: hidden;
+
+}
+.footer_img img{
+    width: 100%;
+    height: auto;
+    filter: brightness(0.3);
+    transition: 0.5s;
+
+}
+.footer_img img:hover{
+
+    filter: brightness(0.6);
+}
+.footer_bottom_name{
+    display: flex;
+    padding: 1% 0;
+    border-top: 1px solid var(--gray-dark-color) ;
+    justify-content: space-between;
 }

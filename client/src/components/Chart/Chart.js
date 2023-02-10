@@ -74,16 +74,19 @@ const Chart =({currentPrice, chartTermArr,defaultLimit,dataLength,term,setTermVa
         {currentPrice!==0?
         <div className="chart_current">
             <div className="chart_current_date">
-            <h5>ENTA</h5>
-            <h5>{currentPrice.totalCurrentPrices.enta}</h5>
+            {tokenName==='enta'?
+            <h4>ENTA {currentPrice.totalCurrentPrices.enta}</h4>:
+            <h5>ENTA {currentPrice.totalCurrentPrices.enta}</h5>}
             </div>
             <div className="chart_current_date">
-            <h5>BEB</h5>
-            <h5>{currentPrice.totalCurrentPrices.beb}</h5>
+            {tokenName==='beb'?
+            <h4>BEB {currentPrice.totalCurrentPrices.beb}</h4>:
+            <h5>BEB {currentPrice.totalCurrentPrices.beb}</h5>}
             </div>
             <div className="chart_current_date">
-            <h5>LEO</h5>
-            <h5>{currentPrice.totalCurrentPrices.leo}</h5>
+            {tokenName==='leo'?
+            <h4>LEO {currentPrice.totalCurrentPrices.leo}</h4>:
+            <h5>LEO {currentPrice.totalCurrentPrices.leo}</h5>}
             </div>
         </div>
         :<></>}

@@ -145,7 +145,7 @@ module.exports = {
       const entaDividend = await position_his.sum('price', { where: { user_wallet: wallet, order: 'dividend', token_name: 'ENTAToken' } });
       const bebDividend = await position_his.sum('price', { where: { user_wallet: wallet, order: 'dividend', token_name: 'BEBToken' } });
       const leoDividend = await position_his.sum('price', { where: { user_wallet: wallet, order: 'dividend', token_name: 'LEOToken' } });
-      if(!entaDividend || !bebDividend || !leoDividend) return res.status(400).send({message: "wrong with sum query"})
+      // if(!entaDividend || !bebDividend || !leoDividend) return res.status(400).send({message: "wrong with sum query"})
       const result = {
         ENTAToken: entaDividend,
         BEBToken: bebDividend,

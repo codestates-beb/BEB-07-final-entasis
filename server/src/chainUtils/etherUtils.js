@@ -24,7 +24,7 @@ const sendDividendToUser = async (recipient, value) =>{
       to: recipient,
       value: weiValue,
     });
-    console.log("배당금 지급 완료, 수신자 : " + recipient);
+    // console.log("배당금 지급 완료, 수신자 : " + recipient);
     return tx;
   } catch (err) {
     console.error(err);

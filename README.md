@@ -4,6 +4,16 @@
 
 [https://youtu.be/PSVpth7uqb4?t=650](https://youtu.be/PSVpth7uqb4?t=650)
 
+# 👨‍👨‍👧‍👧 참여자
+
+|Name|Role|Github|Blog|
+|---|-----|---|---|
+|윤수빈|Frontend|https://github.com/Russ481-k|작성|
+|백준석|Frontend|https://github.com/bajnsk|작성|
+|김현태|Backend|https://github.com/hyuntae384|작성|
+|박도형|Backend|https://github.com/pdhyeong|https://shapespark.tistory.com/|
+
+
 # **Security Token Trading Platform**
 
 [글로벌 자산운용사 블랙록](https://ko.wikipedia.org/wiki/%EB%B8%94%EB%9E%99%EB%A1%9D_(%EA%B8%B0%EC%97%85))의 대표 래리핑크는 **2022. 12. 1.** 인터뷰 (10:52 ) 에서
@@ -207,4 +217,50 @@ STO를 통해 현재 증권 거래 비용에 포함된 브로커들의 수수료
             
 
  
+# 사용기술 스택
+## plan & editor
+<div>
+    <img src="https://img.shields.io/badge/Visual Studio Code-007ACC?style=for-the-badge&logo=Visual Studio Code&logoColor=white">
+    <img src="https://img.shields.io/badge/Discord-5865F2?style=for-the-badge&logo=Discord&logoColor=white">
+    <img src="https://img.shields.io/badge/Notion-000000?style=for-the-badge&logo=Notion&logoColor=white">
+    <img src="https://img.shields.io/badge/Figma-F24E1E?style=for-the-badge&logo=Figma&logoColor=white">
+</div>
 
+## Fronted
+<div>
+    <img src="https://img.shields.io/badge/HTML5-E34F26?style=for-the-badge&logo=HTML5&logoColor=white">
+    <img src="https://img.shields.io/badge/CSS-1572B6?style=for-the-badge&logo=CSS3&logoColor=white">
+    <img src="https://img.shields.io/badge/React-61DAFB?style=for-the-badge&logo=React&logoColor=white">
+    <img src="https://img.shields.io/badge/Javascript-F7DF1E?style=for-the-badge&logo=Javascript&logoColor=white">
+</div>
+
+## Backend
+<div>
+    <img src="https://img.shields.io/badge/Node.js-339933?style=for-the-badge&logo=Node.js&logoColor=white">
+    <img src="https://img.shields.io/badge/Javascript-F7DF1E?style=for-the-badge&logo=Javascript&logoColor=white">
+    <img src="https://img.shields.io/badge/Express-000000?style=for-the-badge&logo=Express&logoColor=white">
+</div>
+
+## Blockchain
+<div>
+    <img src="https://img.shields.io/badge/Solidity-363636?style=for-the-badge&logo=Solidity&logoColor=white">
+    <img src="https://img.shields.io/badge/Ethereum-3C3C3D?style=for-the-badge&logo=Ethereum&logoColor=white">
+    <img src="https://img.shields.io/badge/ganache-FECC00?style=for-the-badge&logo=ganache&logoColor=white">
+    <img src="https://img.shields.io/badge/truffle-6C595C?style=for-the-badge&logo=truffle&logoColor=white">
+    <img src="https://img.shields.io/badge/Remix-000000?style=for-the-badge&logo=Remix&logoColor=white">
+</div>
+
+## Database
+<div>
+    <img src="https://img.shields.io/badge/AWS RDS-527FFF?style=for-the-badge&logo=AWS RDS&logoColor=white">
+    <img src="https://img.shields.io/badge/MySQL-4479A1?style=for-the-badge&logo=MySQL&logoColor=white">
+    <img src="https://img.shields.io/badge/Sequelize-52B0E7?style=for-the-badge&logo=Sequelize&logoColor=white"> 
+</div>
+
+## Deploy
+<div>
+    <img src="https://img.shields.io/badge/Docker-2496ED?style=for-the-badge&logo=Docker&logoColor=white">
+    <img src="https://img.shields.io/badge/Github Actions-2088FF?style=for-the-badge&logo=Github Actions&logoColor=white">
+    <img src="https://img.shields.io/badge/amazon EC2-FF9900?style=for-the-badge&logo=amazonec2&logoColor=white">
+    <img src="https://img.shields.io/badge/amazon s3-569A31?style=for-the-badge&logo=amazons3&logoColor=white">
+</div>

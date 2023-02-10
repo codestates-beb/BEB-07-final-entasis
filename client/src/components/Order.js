@@ -5,8 +5,10 @@ import {FaucetWallet, EnrollWallet, ChName, Tutorial, Score, Position, Account} 
 import {BuyToken, SellToken} from '../apis/token';
 import Web3 from "web3";
 import TokenABI from "../ABIs/ERC1400.json"
+import SelectBox from "./Select";
 
-const Order =({ST_CurrentPrice,userEth,userEntaToken,userBebToken,userLeoToken,tokenName,totalCurrentPrices,refresh,setRefresh})=>{
+const Order =({ST_CurrentPrice,userEth,userEntaToken,userBebToken,userLeoToken,tokenName,totalCurrentPrices,refresh,setRefresh,ST_Name,setTokenName})=>{
+
     const [amount, setAmount] = useState("");
     const [price, setPrice] = useState("");
     const [isFaucet, setIsFaucet] = useState(false)
@@ -17,14 +19,14 @@ const Order =({ST_CurrentPrice,userEth,userEntaToken,userBebToken,userLeoToken,t
     } */
     const [token, setToken] = useState("enta");
     const web3 = new Web3(
-        window.ethereum || process.env.REACT_APP_GANACHE_NETWORK
+        window.ethereum || "18.183.252.200"
     );
-
+    const serverAddress = "0xcF2d1489aa02781EED54C7E531d91668Bd3f3703"
     const userAccount = useWeb3React().account;
     const StABI = TokenABI.abi
-    const EntaTokenContract = new web3.eth.Contract(StABI, process.env.REACT_APP_ENTA_CA);
-    const LeoTokenContract = new web3.eth.Contract(StABI, process.env.REACT_APP_LEO_CA);
-    const BebTokenContract = new web3.eth.Contract(StABI, process.env.REACT_APP_BEB_CA);
+    const EntaTokenContract = new web3.eth.Contract(StABI, "0x7E8D575B3f4a8f419977CEDc14B2b7A229E09D07");
+    const LeoTokenContract = new web3.eth.Contract(StABI, "0xd0A913d056748C1f33687eE90d3d996599bbeb07");
+    const BebTokenContract = new web3.eth.Contract(StABI, "0xF642aEB3d76fc01149bb10dcD88120528aefDB16");
     const [tokenContract, setTokenConteact] = useState(EntaTokenContract);
     const [isRestricted, setIsRestricted] = useState(false);
     useEffect(() => {
@@ -54,14 +56,35 @@ const Order =({ST_CurrentPrice,userEth,userEntaToken,userBebToken,userLeoToken,t
 
     function amountChange(e){
         let curamount = e.target.value;
-        setAmount(curamount)
+        
+        let buyMaxST_1 = Math.floor(Number(userEth)/Number(totalCurrentPrices.enta))
+        let sellMaxST_1 = ST_1.amount
+        let buyMaxST_2 = Math.floor(userEth/totalCurrentPrices.beb)
+        let sellMaxST_2 = ST_2.amount
+        let buyMaxST_3 = Math.floor(userEth/totalCurrentPrices.leo)
+        let sellMaxST_3 = ST_3.amount
+        let amountMax = (buyMax,sellMax)=>{return Math.max(buyMax,sellMax)}
+        if((token === 'enta')&&(amountMax(buyMaxST_1,sellMaxST_1)<curamount)){
+            setAmount(amountMax(buyMaxST_1,sellMaxST_1))
+            e.target.value=amountMax(buyMaxST_1,sellMaxST_1)
+        }
+        if((token === 'beb')&&(amountMax(buyMaxST_2,sellMaxST_2)<curamount)){
+            setAmount(amountMax(buyMaxST_2,sellMaxST_2))
+            e.target.value=amountMax(buyMaxST_2,sellMaxST_2)
+        }
+        if((token === 'leo')&&(amountMax(buyMaxST_3,sellMaxST_3)<curamount)){
+            setAmount(amountMax(buyMaxST_3,sellMaxST_3))
+            e.target.value=amountMax(buyMaxST_3,sellMaxST_3)
+        }
+
+
     }
     // 구매
     async function SendETH(){
         const totalValue = amount * price * 1.0004;
         web3.eth.sendTransaction({
             from: userAccount,
-            to: process.env.REACT_APP_ADMIN_ADDRESS,
+            to: serverAddress,
             value: web3.utils.toWei(String(totalValue), 'ether')
         }).then(function(receipt){
             console.log(receipt)
@@ -72,7 +95,7 @@ const Order =({ST_CurrentPrice,userEth,userEntaToken,userBebToken,userLeoToken,t
     }
     // 판매
     async function SendToken(){
-        const data = await tokenContract.methods.transfer(process.env.REACT_APP_ADMIN_ADDRESS, web3.utils.toWei(amount)).encodeABI()
+        const data = await tokenContract.methods.transfer(serverAddress, web3.utils.toWei(amount)).encodeABI()
         const tx = {
             from: userAccount,
             to: tokenContract._address,
@@ -106,6 +129,12 @@ const Order =({ST_CurrentPrice,userEth,userEntaToken,userBebToken,userLeoToken,t
         <div className="order_mode">
             {/* <h3>Limit</h3> */}
             <h3>Market Order</h3>
+            <div className="order_select">
+                <SelectBox
+                    set={ST_Name}
+                    value={setTokenName}
+                ></SelectBox>
+            </div>
         </div>
         <form>
             <h6 className="order_available">Available Eth : {userEth}</h6>
@@ -126,7 +155,9 @@ const Order =({ST_CurrentPrice,userEth,userEntaToken,userBebToken,userLeoToken,t
             </div>
         </form>
         <div className='assets'>
-            <h4>Assets</h4>
+            <div className="total_assets">
+                <h4>Assets</h4><h6>{(ST_1.amount*ST_1.price+ST_2.amount*ST_2.price+ST_3.amount*ST_3.price).toFixed(4)}ETH</h6>
+            </div>      
             <div className='assets_wraper'>
                 <h6>{ST_1.name+" ("+ST_1.amount+")"+" "+ST_1.price+"ETH"}</h6>
                 <h6>{ST_2.name+" ("+ST_2.amount+")"+" "+ST_2.price+"ETH"}</h6>

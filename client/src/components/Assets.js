@@ -80,7 +80,7 @@ const Assets =({ST_CurrentPrice,powerOfMarket,userEth,userEntaToken,userBebToken
     // 유저 총 배당 수익금
     const totalUserDividendIncome = userDividend.ENTAToken + userDividend.BEBToken + userDividend.LEOToken
     const totalUserDividendIncomeRatio = totalUserDividendIncome / sumTokenValue
-    console.log(totalUserDividendIncomeRatio)
+    // console.log(totalUserDividendIncomeRatio)
     const AssetsArray = [
         {
             id:1,
@@ -190,18 +190,18 @@ const Assets =({ST_CurrentPrice,powerOfMarket,userEth,userEntaToken,userBebToken
                         <rect
                             className="RTD_move"
                             x={5}
-                            y={(150+marketData*600)>0?(150+marketData*600):0}
+                            y={(150+marketData*100)>0?(80+marketData*100):0}
                             width = {80}
-                            height = {(80-marketData*600)>0?80-marketData*600:0}
+                            height = {(80-marketData*100)>0?150-marketData*100:0}
                             fill='#00A4D8'
                             >
                             </rect>
                             <rect
                             className="RTD_move"
                             x={95}
-                            y={(150-marketData*600)>0?150-marketData*600:0}
+                            y={(150-marketData*100)>0?80-marketData*100:0}
                             width = {80}
-                            height = {(80+marketData*600)>0?80+marketData*600:0}
+                            height = {(80+marketData*100)>0?150+marketData*100:0}
                             fill='#b8284a'>
                             </rect>
                         </g>

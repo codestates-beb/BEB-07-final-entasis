@@ -5,7 +5,7 @@ const WelcomePage =({isLoading, tutorialCnt, account,isWelcome,setIsWelcome})=>{
     useEffect(()=>{
         Tutorial(account,tutorialCnt)
     },[account,tutorialCnt])
-console.log()
+
 let welcomeOverflow =  document.body.style.overflow
     if(isLoading){
     return (<div
